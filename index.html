@@ -127,39 +127,46 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 #sidetop{position:relative;z-index:1;display:flex;flex-direction:column;gap:13px}
 #brand{display:flex;align-items:center;gap:10px;padding:2px 6px 0}
 #brand b{font-size:17px;font-weight:640;letter-spacing:-.4px;color:var(--ink)}
-#dot{width:9px;height:9px;border-radius:50%;
-  background:radial-gradient(circle at 32% 28%, #dfe9f2, #b3c6d6);
-  box-shadow:0 0 0 3px rgba(255,255,255,.5), inset 0 1px 1px rgba(255,255,255,.9);transition:.4s var(--spring)}
-#dot.on{background:radial-gradient(circle at 32% 28%, #b6f5c9, #34c95f 60%, #1ea847);
-  box-shadow:0 0 0 3px rgba(52,201,95,.2), 0 0 10px rgba(52,201,95,.45), inset 0 1px 1px rgba(255,255,255,.8)}
+#dot{width:9px;height:9px;border-radius:50%;background:#c2d2e0;
+  box-shadow:0 0 0 3px rgba(255,255,255,.45);transition:.4s var(--spring)}
+#dot.on{background:#3cc463;box-shadow:0 0 0 3px rgba(60,196,99,.18)}
 
-/* a marble: polished glass sphere with a specular highlight */
+/* a frosted control: matte translucent white, thin dark glyph. this is what
+   most of the reference's buttons are. no gloss, no gradient chrome. */
+.icon{
+  border:none;cursor:pointer;border-radius:50%;display:grid;place-items:center;position:relative;
+  color:#3d5b76;background:rgba(255,255,255,.68);
+  backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
+  box-shadow:0 2px 8px rgba(50,110,165,.14), inset 0 1px 0 rgba(255,255,255,.9),
+             inset 0 0 0 1px rgba(255,255,255,.5);
+  transition:transform .34s var(--spring), background .25s var(--ease), box-shadow .25s var(--ease);
+}
+.icon:hover{background:rgba(255,255,255,.9);transform:translateY(-1.5px);
+  box-shadow:0 5px 14px rgba(50,110,165,.18), inset 0 1px 0 #fff}
+.icon:active{transform:translateY(.5px) scale(.95);
+  box-shadow:inset 0 2px 5px rgba(70,120,165,.22)}
+
+/* the one blue control, and even it is softened right down from a marble */
 .marble{
   border:none;cursor:pointer;border-radius:50%;display:grid;place-items:center;position:relative;
   color:#fff;overflow:hidden;
-  background:radial-gradient(125% 125% at 33% 22%, var(--marble1) 0%, #6fbcf8 26%, var(--marble2) 50%, var(--marble3) 76%, var(--marble4) 100%);
+  background:linear-gradient(168deg, #5fb2f2 0%, #3d9bea 46%, #2183dc 100%);
   box-shadow:
-    0 6px 16px rgba(20,110,190,.42),
-    0 2px 5px rgba(20,110,190,.28),
-    inset 0 2px 3px rgba(255,255,255,.9),
-    inset 0 -4px 8px rgba(8,70,140,.42),
-    inset 0 0 0 1px rgba(255,255,255,.35);
-  transition:transform .4s var(--spring), box-shadow .3s var(--ease), filter .3s var(--ease);
+    0 4px 12px rgba(25,115,195,.30),
+    inset 0 1.5px 0 rgba(255,255,255,.55),
+    inset 0 0 0 1px rgba(255,255,255,.28);
+  transition:transform .34s var(--spring), box-shadow .25s var(--ease), filter .25s var(--ease);
 }
-.marble::after{ /* the specular cap */
-  content:'';position:absolute;left:16%;top:7%;width:68%;height:36%;border-radius:50%;
-  background:linear-gradient(rgba(255,255,255,.92),rgba(255,255,255,.05));pointer-events:none
+.marble::after{ /* one soft sheen across the top, not a glass cap */
+  content:'';position:absolute;left:0;right:0;top:0;height:46%;border-radius:50% 50% 40% 40%/100% 100% 100% 100%;
+  background:linear-gradient(rgba(255,255,255,.28),rgba(255,255,255,0));pointer-events:none
 }
-.marble:hover{transform:translateY(-2px) scale(1.05);filter:brightness(1.07);
-  box-shadow:0 10px 22px rgba(20,110,190,.5), 0 0 18px rgba(90,175,245,.5),
-             inset 0 2px 3px rgba(255,255,255,.95), inset 0 -4px 8px rgba(8,70,140,.4)}
-.marble:active{transform:translateY(1px) scale(.94);
-  box-shadow:0 3px 8px rgba(20,110,190,.34), inset 0 3px 7px rgba(8,70,140,.5), inset 0 -1px 2px rgba(255,255,255,.6)}
-#newbtn{margin-left:auto;width:34px;height:34px;font-size:19px;line-height:1;font-weight:400;
-  animation:suspend 6s ease-in-out infinite}
-@keyframes suspend{0%,100%{transform:translateY(0) rotate(0)}33%{transform:translateY(-2px) rotate(-1.2deg)}66%{transform:translateY(1px) rotate(1deg)}}
-@media (prefers-reduced-motion:reduce){#newbtn{animation:none}}
-#newbtn span{position:relative;z-index:1;text-shadow:0 1px 2px rgba(10,70,140,.5);margin-top:-1px}
+.marble:hover{transform:translateY(-1.5px);filter:brightness(1.05);
+  box-shadow:0 7px 18px rgba(25,115,195,.36), inset 0 1.5px 0 rgba(255,255,255,.6)}
+.marble:active{transform:translateY(.5px) scale(.95);
+  box-shadow:0 2px 6px rgba(25,115,195,.26), inset 0 2px 5px rgba(10,80,150,.32)}
+#newbtn{margin-left:auto;width:34px;height:34px}
+#newbtn svg{width:17px;height:17px}
 
 /* the search field is a slot pressed into the shell */
 #search{
@@ -189,8 +196,8 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 .cv{
   display:flex;gap:11px;align-items:center;padding:9px 11px;border-radius:var(--rM);cursor:pointer;
   user-select:none;margin-bottom:5px;position:relative;
-  background:linear-gradient(rgba(255,255,255,.72),rgba(255,255,255,.46));
-  box-shadow:0 2px 5px rgba(50,110,165,.11), inset 0 1px 0 rgba(255,255,255,.85);
+  background:linear-gradient(rgba(255,255,255,.86),rgba(255,255,255,.66));
+  box-shadow:0 2px 6px rgba(50,110,165,.13), inset 0 1px 0 rgba(255,255,255,.92);
   transition:transform .34s var(--spring), box-shadow .3s var(--ease), background .3s var(--ease);
 }
 .cv:hover{
@@ -207,24 +214,16 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 }
 .av{
   width:40px;height:40px;min-width:40px;border-radius:50%;display:grid;place-items:center;
-  font-size:12.5px;font-weight:700;color:#3a5a76;position:relative;letter-spacing:-.4px;overflow:hidden;
-  text-shadow:0 1px 0 rgba(255,255,255,.85);
+  font-size:12.5px;font-weight:620;color:#3a586f;position:relative;letter-spacing:-.3px;
   box-shadow:
-    inset 0 3px 4px rgba(255,255,255,.95),
-    inset 0 -5px 9px rgba(90,140,185,.42),
-    inset 0 0 0 1px rgba(255,255,255,.55),
-    0 4px 10px rgba(60,120,175,.26),
-    0 1px 2px rgba(60,120,175,.18);
+    inset 0 1px 0 rgba(255,255,255,.85),
+    inset 0 0 0 1px rgba(255,255,255,.6),
+    0 1px 3px rgba(60,120,175,.14);
 }
-.av::after{content:'';position:absolute;left:20%;top:9%;width:52%;height:30%;border-radius:50%;
-  background:linear-gradient(rgba(255,255,255,.98),rgba(255,255,255,.05));pointer-events:none;
-  filter:blur(.4px)}
-/* a second, tiny catchlight: what makes a sphere look wet rather than matte */
-.av::before{content:'';position:absolute;right:19%;bottom:20%;width:20%;height:15%;border-radius:50%;
-  background:rgba(255,255,255,.55);filter:blur(1.6px);pointer-events:none}
+/* no specular highlights. these are matte frosted discs, not glass beads. */
 .av .st{
-  position:absolute;right:-1px;bottom:-1px;width:12px;height:12px;border-radius:50%;z-index:2;
-  border:2.5px solid #fff;box-shadow:0 1px 3px rgba(20,70,120,.3), inset 0 1px 1px rgba(255,255,255,.6)
+  position:absolute;right:-2px;bottom:-2px;width:13px;height:13px;border-radius:50%;z-index:2;
+  border:2.5px solid #fff;box-shadow:0 1px 3px rgba(20,70,120,.22)
 }
 .meta{flex:1;min-width:0}
 .row1{display:flex;align-items:baseline;gap:7px}
@@ -236,9 +235,8 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 .badge{
   min-width:21px;height:21px;border-radius:11px;color:#fff;font-size:11px;font-weight:700;
   display:grid;place-items:center;padding:0 6px;margin-left:5px;position:relative;overflow:hidden;
-  background:radial-gradient(125% 125% at 33% 22%, var(--marble1), var(--marble2) 48%, var(--marble3) 100%);
-  box-shadow:0 3px 8px rgba(20,110,190,.42), inset 0 1.5px 2px rgba(255,255,255,.8),
-             inset 0 -2px 4px rgba(8,70,140,.35)
+  background:linear-gradient(168deg,#4ea6ee,#2183dc);
+  box-shadow:0 1px 4px rgba(25,115,195,.28), inset 0 1px 0 rgba(255,255,255,.4)
 }
 
 /* ---------------------------------------------------------------
@@ -282,7 +280,7 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 #msgs{
   flex:1;overflow-y:auto;overflow-x:hidden;padding:24px 26px 20px;
   display:flex;flex-direction:column;gap:3px;position:relative;z-index:1;
-  background:linear-gradient(rgba(190,223,247,.40), rgba(238,249,255,.54));
+  background:linear-gradient(rgba(150,199,238,.46), rgba(214,238,254,.52));
   border-radius:var(--rL);
   box-shadow:var(--recessDeep);
 }
@@ -322,8 +320,8 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 }
 /* outgoing: pale sky blue, a glass and paper hybrid */
 .b.me{
-  align-self:flex-end;color:#123a5e;
-  background:linear-gradient(158deg, #dcefff 0%, #bfe1fc 46%, #a3d2f8 100%);
+  align-self:flex-end;color:#0d3557;
+  background:linear-gradient(158deg, #cbe7fd 0%, #a8d5f8 48%, #8cc6f4 100%);
   box-shadow:
     0 10px 26px rgba(30,100,170,.26),
     0 3px 8px rgba(30,100,170,.18),
@@ -361,9 +359,7 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
   box-shadow:0 8px 20px rgba(45,105,160,.15), inset 0 1.5px 0 #fff;
   animation:settle .4s var(--spring) both
 }
-.typing i{width:9px;height:9px;border-radius:50%;animation:tp 1.4s infinite;
-  background:radial-gradient(circle at 32% 28%, #cfe6f8, #8fbcdd);
-  box-shadow:inset 0 1px 1px rgba(255,255,255,.9)}
+.typing i{width:8px;height:8px;border-radius:50%;animation:tp 1.4s infinite;background:#a9c4da}
 .typing i:nth-child(2){animation-delay:.18s}.typing i:nth-child(3){animation-delay:.36s}
 @keyframes tp{0%,60%,100%{opacity:.35;transform:translateY(0) scale(.9)}30%{opacity:1;transform:translateY(-5px) scale(1)}}
 
@@ -493,14 +489,10 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 .mbtn:active{transform:translateY(1px) scale(.97);box-shadow:inset 0 3px 7px rgba(70,120,165,.22)}
 .mbtn.p{
   color:#fff;position:relative;overflow:hidden;
-  background:radial-gradient(135% 135% at 33% 18%, var(--marble1), #5fb4f6 30%, var(--marble2) 55%, var(--marble3) 100%);
-  box-shadow:0 7px 18px rgba(20,110,190,.4), inset 0 2px 3px rgba(255,255,255,.85),
-             inset 0 -3px 7px rgba(8,70,140,.38)
+  background:linear-gradient(168deg,#5fb2f2,#3d9bea 48%,#2183dc);
+  box-shadow:0 4px 12px rgba(25,115,195,.30), inset 0 1.5px 0 rgba(255,255,255,.5)
 }
-.mbtn.p::after{content:'';position:absolute;left:12%;top:6%;width:76%;height:38%;border-radius:50%;
-  background:linear-gradient(rgba(255,255,255,.7),rgba(255,255,255,0));pointer-events:none}
-.mbtn.p:hover{filter:brightness(1.07);box-shadow:0 11px 26px rgba(20,110,190,.48), 0 0 20px rgba(90,175,245,.45),
-  inset 0 2px 3px rgba(255,255,255,.9), inset 0 -3px 7px rgba(8,70,140,.36)}
+.mbtn.p:hover{filter:brightness(1.05);box-shadow:0 7px 18px rgba(25,115,195,.36), inset 0 1.5px 0 rgba(255,255,255,.55)}
 .mbtn:disabled{opacity:.4;cursor:default;transform:none;filter:none}
 .pick{
   display:flex;align-items:center;gap:13px;padding:10px 12px;border-radius:var(--rM);cursor:pointer;
@@ -530,7 +522,9 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
   <aside id="side" class="shell">
     <div id="sidetop">
       <div id="brand"><span id="dot"></span><b>Switchboard</b>
-        <button id="newbtn" class="marble" title="New group"><span>+</span></button></div>
+        <button id="newbtn" class="icon" title="New group" aria-label="New group">
+          <svg viewBox="0 0 24 24"><path d="M12 5.5v13M5.5 12h13" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" fill="none"/></svg></button></div>
       <input id="search" placeholder="Search" autocomplete="off">
     </div>
     <div id="convs"></div>
@@ -583,11 +577,11 @@ function avatar(a){
       a.status==='working' ? '#ff9f0a' :
       a.status==='error'   ? '#ff453a' :
       a.enabled===false || a.status==='off' ? '#adbccd' : '#30d158'}"></i>`;
-  // a narrow icy band only: pearl through powder blue to soft cyan. no candy colours.
-  const b = 186 + (h % 34);            // 186..219, sky to periwinkle
-  const s = 34 + (h % 22);             // gently varied saturation
+  // flat frosted tint, barely there. a narrow icy band, no shading, no gloss.
+  const b = 188 + (h % 32);            // 188..219
+  const s = 30 + (h % 16);
   return `<div class="av" style="background:
-    radial-gradient(125% 125% at 32% 20%, #ffffff 0%, hsl(${b} ${s+16}% 93%) 22%, hsl(${b} ${s}% 80%) 52%, hsl(${b} ${s+6}% 66%) 80%, hsl(${b+8} ${s+10}% 56%) 100%)">${init}${st}</div>`;
+    linear-gradient(165deg, hsl(${b} ${s+12}% 94%), hsl(${b} ${s}% 80%))">${init}${st}</div>`;
 }
 const timeOf = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
 function dayOf(ts){
