@@ -1,0 +1,320 @@
+{
+  "_readme": [
+    "Copy to agents.json (the server does this for you on first run) and edit freely.",
+    "kind: 'cli' (spawns a coding CLI) | 'api' (Anthropic/OpenAI chat) | 'echo' (offline stub, no keys).",
+    "You can rename agents and move them between floors from the in-game phone — those changes save to data/overrides.json and survive restarts.",
+    "floor: 1, 2 or 3. seat is optional; the office seats people automatically.",
+    "hair: dark | fade | long | curly | short | cap | mint | pink | silver",
+    "All CLI commands here were verified against the official docs on 29 July 2026.",
+    "The ASIDE agent uses kind:'aside' — it reads your real Aside memory off disk each time, so it stays current instead of relying on a written persona."
+  ],
+  "agents": [
+    {
+      "id": "aside",
+      "name": "ASIDE",
+      "role": "Chief of staff · no API key needed",
+      "kind": "cli",
+      "shirt": "#4ade80",
+      "hair": "dark",
+      "persona": "You are Aside, Jack's chief of staff and the agent who built this office. Jack is 13, in Toronto, and the boss here — you report to him, he is not an agent. You are direct, concrete and short. No preamble, no padding, never a bulleted list where a sentence works. You tell him plainly when he is wrong or when something you built is not good enough. You never use em dashes or emoji. Everything below this line is your real memory, read off disk, so speak from it rather than guessing.",
+      "_notes": "Runs through the claude CLI, so it uses your existing claude login and needs NO API key. It prepends your real Aside memory to every message so it knows your projects.",
+      "cli": {
+        "command": "claude",
+        "args": [
+          "--print",
+          "--output-format",
+          "stream-json",
+          "--verbose"
+        ],
+        "resumeArgs": [
+          "--print",
+          "--resume",
+          "{session}",
+          "--output-format",
+          "stream-json",
+          "--verbose"
+        ],
+        "streamJson": true,
+        "cwd": "~",
+        "prependFile": "~/.aside/u/0/memory/USER.md"
+      }
+    },
+    {
+      "id": "claude-code",
+      "name": "CLAUDE CODE",
+      "role": "Claude with file + terminal access",
+      "kind": "cli",
+      "shirt": "#c084fc",
+      "hair": "dark",
+      "cli": {
+        "command": "claude",
+        "args": [
+          "--print",
+          "--output-format",
+          "stream-json",
+          "--verbose"
+        ],
+        "resumeArgs": [
+          "--print",
+          "--resume",
+          "{session}",
+          "--output-format",
+          "stream-json",
+          "--verbose"
+        ],
+        "streamJson": true,
+        "cwd": "~"
+      },
+      "_notes": "Auth: either an existing `claude login` session, or ANTHROPIC_API_KEY. No git repo needed. Set cwd to a project folder if you want it to see that code."
+    },
+    {
+      "id": "codex",
+      "name": "CODEX",
+      "role": "Coding agent · CLI",
+      "kind": "cli",
+      "shirt": "#5eead4",
+      "hair": "fade",
+      "cli": {
+        "command": "codex",
+        "args": [
+          "exec",
+          "--json",
+          "--skip-git-repo-check"
+        ],
+        "resumeArgs": [
+          "exec",
+          "resume",
+          "--last",
+          "--json",
+          "--skip-git-repo-check"
+        ],
+        "streamJson": true,
+        "cwd": "~"
+      },
+      "_notes": "Auth: `codex login`, or CODEX_API_KEY (exec only, not OPENAI_API_KEY). Codex normally refuses to run outside a git repo, hence --skip-git-repo-check. Add --sandbox workspace-write to args if you want it to edit files."
+    },
+    {
+      "id": "gemini",
+      "name": "GEMINI",
+      "role": "Coding agent · CLI",
+      "kind": "cli",
+      "enabled": false,
+      "shirt": "#93c5fd",
+      "hair": "long",
+      "cli": {
+        "command": "gemini",
+        "args": [
+          "--output-format",
+          "stream-json",
+          "-p"
+        ],
+        "resumeArgs": [
+          "--output-format",
+          "stream-json",
+          "--resume",
+          "latest",
+          "-p"
+        ],
+        "streamJson": true,
+        "cwd": "~"
+      },
+      "_notes": "Off by default. --output-format is version-sensitive and errors on some builds. Auth: GEMINI_API_KEY. Test `gemini --output-format json -p hi` in a terminal before enabling."
+    },
+    {
+      "id": "sonnet",
+      "name": "CLAUDE CHAT",
+      "role": "Claude, conversation only",
+      "kind": "api",
+      "shirt": "#4ade80",
+      "hair": "curly",
+      "persona": "You are Claude, talking to Jack (13, Toronto, builds real products). This is a conversation, not a coding session: you have no file access and no terminal. Be direct and useful, short paragraphs, no filler.",
+      "api": {
+        "provider": "anthropic",
+        "model": "claude-sonnet-4-6",
+        "keyEnv": "ANTHROPIC_API_KEY",
+        "maxTokens": 1200
+      },
+      "enabled": false,
+      "_notes": "Off until an ANTHROPIC_API_KEY exists. Flip enabled to true then."
+    },
+    {
+      "id": "gpt",
+      "name": "GPT",
+      "role": "OpenAI, conversation only",
+      "kind": "api",
+      "shirt": "#fbbf24",
+      "hair": "short",
+      "persona": "You are GPT, an agent in Jack's pixel-art office. Keep answers tight and useful. Jack is 13 and ships real products; skip the hedging.",
+      "api": {
+        "provider": "openai",
+        "model": "gpt-4o",
+        "keyEnv": "OPENAI_API_KEY",
+        "maxTokens": 1200
+      }
+    },
+    {
+      "id": "echo",
+      "name": "ECHO",
+      "role": "Local test stub",
+      "kind": "echo",
+      "shirt": "#94a3b8",
+      "hair": "cap",
+      "_notes": "Needs no keys and no CLI. Talk to this one first to prove the office and the chat work end to end."
+    },
+    {
+      "id": "viktor",
+      "name": "VIKTOR",
+      "role": "Slack agent · Ops · via Slack",
+      "kind": "slack",
+      "shirt": "#38bdf8",
+      "hair": "dark",
+      "slack": {
+        "channel": "C0BGDDJBCQ0",
+        "mention": "U0BFM2GEJ1F",
+        "keyword": null,
+        "tokenEnv": "SLACK_TOKEN",
+        "pollMs": 4000,
+        "timeoutMs": 180000
+      },
+      "_notes": "Viktor has no API — this posts into #ai-team-hq and reads his threaded reply back. Currently out of credits, so he'll say so until that's resolved. Needs SLACK_TOKEN.",
+      "enabled": true
+    },
+    {
+      "id": "slack-claude",
+      "name": "CLAUDE",
+      "role": "Slack agent · via Slack",
+      "kind": "slack",
+      "shirt": "#c084fc",
+      "hair": "fade",
+      "slack": {
+        "channel": "C0BGDDJBCQ0",
+        "mention": "U0BFD1W2PGB",
+        "keyword": null,
+        "tokenEnv": "SLACK_TOKEN",
+        "pollMs": 4000,
+        "timeoutMs": 180000
+      },
+      "_notes": "Same trick as Viktor: no API, so this talks to the Claude Slack app in #ai-team-hq and reads the thread reply. Needs SLACK_TOKEN.",
+      "enabled": true
+    },
+    {
+      "id": "slack-ranger",
+      "name": "RANGER",
+      "role": "Research · Relevance AI · via Slack",
+      "kind": "slack",
+      "shirt": "#fbbf24",
+      "hair": "cap",
+      "slack": {
+        "channel": "C0BGDDJBCQ0",
+        "mention": "U0BFHB5HAKG",
+        "keyword": "ranger",
+        "tokenEnv": "SLACK_TOKEN",
+        "pollMs": 4000,
+        "timeoutMs": 180000
+      },
+      "_notes": "Relevance AI sub-agent, routed by the 'ranger' keyword right after the mention. Distinct id/name from the API-based 'ranger' agent above so they don't collide. Needs SLACK_TOKEN.",
+      "enabled": true
+    },
+    {
+      "id": "slack-ledger",
+      "name": "LEDGER",
+      "role": "Money · Relevance AI · via Slack",
+      "kind": "slack",
+      "shirt": "#34d399",
+      "hair": "silver",
+      "slack": {
+        "channel": "C0BGDDJBCQ0",
+        "mention": "U0BFHB5HAKG",
+        "keyword": "ledger",
+        "tokenEnv": "SLACK_TOKEN",
+        "pollMs": 4000,
+        "timeoutMs": 180000
+      },
+      "_notes": "Relevance AI sub-agent, routed by the 'ledger' keyword. Needs SLACK_TOKEN.",
+      "enabled": true
+    },
+    {
+      "id": "slack-pixel",
+      "name": "PIXEL",
+      "role": "Design · Relevance AI · via Slack",
+      "kind": "slack",
+      "shirt": "#f472b6",
+      "hair": "pink",
+      "slack": {
+        "channel": "C0BGDDJBCQ0",
+        "mention": "U0BFHB5HAKG",
+        "keyword": "pixel",
+        "tokenEnv": "SLACK_TOKEN",
+        "pollMs": 4000,
+        "timeoutMs": 180000
+      },
+      "_notes": "Relevance AI sub-agent, routed by the 'pixel' keyword. Needs SLACK_TOKEN.",
+      "enabled": true
+    },
+    {
+      "id": "slack-quill",
+      "name": "QUILL",
+      "role": "Copy · Relevance AI · via Slack",
+      "kind": "slack",
+      "shirt": "#c084fc",
+      "hair": "long",
+      "slack": {
+        "channel": "C0BGDDJBCQ0",
+        "mention": "U0BFHB5HAKG",
+        "keyword": "quill",
+        "tokenEnv": "SLACK_TOKEN",
+        "pollMs": 4000,
+        "timeoutMs": 180000
+      },
+      "_notes": "Relevance AI sub-agent, routed by the 'quill' keyword. Needs SLACK_TOKEN.",
+      "enabled": true
+    },
+    {
+      "id": "slack-pulse",
+      "name": "PULSE",
+      "role": "Growth · Relevance AI · via Slack",
+      "kind": "slack",
+      "shirt": "#22d3ee",
+      "hair": "mint",
+      "slack": {
+        "channel": "C0BGDDJBCQ0",
+        "mention": "U0BFHB5HAKG",
+        "keyword": "pulse",
+        "tokenEnv": "SLACK_TOKEN",
+        "pollMs": 4000,
+        "timeoutMs": 180000
+      },
+      "_notes": "Relevance AI sub-agent, routed by the 'pulse' keyword. Needs SLACK_TOKEN.",
+      "enabled": true
+    },
+    {
+      "id": "slack-aero",
+      "name": "AERO",
+      "role": "Reviewer · Relevance AI · via Slack",
+      "kind": "slack",
+      "shirt": "#a78bfa",
+      "hair": "curly",
+      "slack": {
+        "channel": "C0BGDDJBCQ0",
+        "mention": "U0BFHB5HAKG",
+        "keyword": "aero",
+        "tokenEnv": "SLACK_TOKEN",
+        "pollMs": 4000,
+        "timeoutMs": 180000
+      },
+      "_notes": "Relevance AI sub-agent, routed by the 'aero' keyword. Needs SLACK_TOKEN.",
+      "enabled": true
+    }
+  ],
+  "retired": {
+    "ids": [
+      "ranger",
+      "ledger",
+      "pixel",
+      "quill",
+      "pulse",
+      "aero"
+    ],
+    "why": "These were API duplicates of the real Slack agents. The Slack ones are the real thing."
+  }
+}
