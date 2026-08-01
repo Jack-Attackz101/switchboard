@@ -15,8 +15,8 @@
   /* bright only. no greys darker than a shadow on white paper. */
   --ink:#20303f;
   --ink2:#3c5064;
-  --dim:#6b8299;
-  --dimmer:#9db2c6;
+  --dim:#54718c;
+  --dimmer:#8098af;
 
   --sky1:#2f8fe0;
   --sky2:#5aade9;
@@ -67,34 +67,18 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
    the sky. deep at the top, hazy at the horizon, clouds drifting.
    --------------------------------------------------------------- */
 #sky{position:fixed;inset:0;z-index:-3;overflow:hidden;
-  background:
-    radial-gradient(140% 88% at 78% 0%, rgba(255,255,255,.72) 0%, rgba(255,255,255,0) 42%),
-    linear-gradient(#0d6fce 0%, #1f81d8 16%, #3d97e4 36%, #62b0ee 58%, #93cbf6 80%, #c2e3fb 100%);
+  background:url('sky.png') center/cover no-repeat, linear-gradient(#1f81d8,#7cc0f6);
+  animation:breathe 46s ease-in-out infinite;
 }
-#sky::before,#sky::after{content:'';position:absolute;inset:-28% -18%;background-repeat:no-repeat}
-#sky::before{
-  background:
-   radial-gradient(closest-side,#fff 0%,rgba(255,255,255,.94) 40%,rgba(255,255,255,0) 76%) 9% 19%/31% 23%,
-   radial-gradient(closest-side,#fff 0%,rgba(255,255,255,.9) 38%,rgba(255,255,255,0) 74%) 20% 12%/25% 18%,
-   radial-gradient(closest-side,#fff 0%,rgba(255,255,255,.86) 40%,rgba(255,255,255,0) 76%) 31% 21%/27% 17%,
-   radial-gradient(closest-side,#fff 0%,rgba(255,255,255,.92) 38%,rgba(255,255,255,0) 74%) 63% 9%/33% 23%,
-   radial-gradient(closest-side,#fff 0%,rgba(255,255,255,.84) 40%,rgba(255,255,255,0) 76%) 77% 18%/29% 19%,
-   radial-gradient(closest-side,#fff 0%,rgba(255,255,255,.8) 40%,rgba(255,255,255,0) 76%) 91% 7%/25% 17%;
-  filter:blur(1px); animation:drift 110s linear infinite;
-}
-#sky::after{
-  background:
-   radial-gradient(closest-side,#fff 0%,rgba(255,255,255,.72) 40%,rgba(255,255,255,0) 76%) 5% 60%/35% 23%,
-   radial-gradient(closest-side,#fff 0%,rgba(255,255,255,.62) 40%,rgba(255,255,255,0) 76%) 19% 71%/31% 19%,
-   radial-gradient(closest-side,#fff 0%,rgba(255,255,255,.64) 40%,rgba(255,255,255,0) 76%) 53% 82%/39% 23%,
-   radial-gradient(closest-side,#fff 0%,rgba(255,255,255,.56) 40%,rgba(255,255,255,0) 76%) 87% 72%/31% 21%;
-  filter:blur(4px); opacity:.92; animation:drift 170s linear infinite reverse;
-}
-@keyframes drift{from{transform:translateX(-3.5%)}to{transform:translateX(3.5%)}}
+@keyframes breathe{0%,100%{transform:scale(1.04) translate(0,0)}50%{transform:scale(1.09) translate(-1.2%,-.8%)}}
+/* the photo carries the clouds now, so only a soft vignette remains to keep
+   the panel edges legible against bright cloud */
+#sky::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(130% 100% at 50% 40%, rgba(255,255,255,0) 40%, rgba(120,175,225,.22) 100%)}
 /* the faintest paper fibre, over everything, never obvious */
 #grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.028;mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E")}
-@media (prefers-reduced-motion:reduce){#sky::before,#sky::after{animation:none}}
+@media (prefers-reduced-motion:reduce){#sky{animation:none}}
 
 #app{display:flex;height:100vh;gap:22px;padding:34px 34px 30px}
 
@@ -106,19 +90,26 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
    --------------------------------------------------------------- */
 .shell{
   position:relative;
-  background:linear-gradient(155deg, rgba(255,255,255,.22), rgba(226,243,255,.10) 46%, rgba(180,220,250,.08));
-  backdrop-filter:blur(26px) saturate(185%);
-  -webkit-backdrop-filter:blur(26px) saturate(185%);
+  background:linear-gradient(155deg, rgba(255,255,255,.58), rgba(233,246,255,.42) 46%, rgba(214,236,253,.38));
+  backdrop-filter:blur(30px) saturate(150%) brightness(1.08);
+  -webkit-backdrop-filter:blur(30px) saturate(150%) brightness(1.08);
   border-radius:var(--rXL);
   box-shadow:
-    0 22px 54px rgba(30,90,150,.20),
-    0 4px 14px rgba(30,90,150,.12),
-    inset 0 1.5px 0 rgba(255,255,255,.95),
-    inset 0 -1.5px 0 rgba(255,255,255,.45),
-    inset 1.5px 0 0 rgba(255,255,255,.6),
-    inset -1.5px 0 0 rgba(255,255,255,.4);
+    0 30px 70px rgba(25,80,140,.26),
+    0 10px 24px rgba(25,80,140,.16),
+    0 2px 6px rgba(25,80,140,.10),
+    inset 0 2.5px 1px rgba(255,255,255,.98),
+    inset 0 -3px 6px rgba(120,170,215,.30),
+    inset 3px 0 5px rgba(255,255,255,.55),
+    inset -3px 0 5px rgba(150,195,235,.30),
+    inset 0 0 0 1px rgba(255,255,255,.5);
 }
 /* a bright rim of light along the top edge, like a moulded plastic bevel */
+.shell::after{
+  content:'';position:absolute;left:5%;right:5%;bottom:-16px;height:26px;border-radius:50%;
+  background:radial-gradient(closest-side, rgba(30,85,145,.24), rgba(30,85,145,0) 72%);
+  filter:blur(9px);pointer-events:none;z-index:-1
+}
 .shell::before{
   content:'';position:absolute;left:6%;right:6%;top:0;height:44%;border-radius:var(--rXL) var(--rXL) 50% 50%/var(--rXL) var(--rXL) 100% 100%;
   background:linear-gradient(rgba(255,255,255,.30),rgba(255,255,255,0));pointer-events:none;z-index:0
@@ -185,7 +176,7 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 /* the conversation list sits in a recessed tray */
 #convs{
   flex:1;overflow-y:auto;overflow-x:hidden;padding:8px;position:relative;z-index:1;
-  background:linear-gradient(rgba(120,185,235,.10), rgba(225,245,255,.14));
+  background:linear-gradient(rgba(196,226,248,.42), rgba(240,250,255,.52));
   border-radius:var(--rL);
   box-shadow:var(--recess);
 }
@@ -198,8 +189,8 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 .cv{
   display:flex;gap:11px;align-items:center;padding:9px 11px;border-radius:var(--rM);cursor:pointer;
   user-select:none;margin-bottom:5px;position:relative;
-  background:linear-gradient(rgba(255,255,255,.42),rgba(255,255,255,.18));
-  box-shadow:0 1px 3px rgba(50,110,165,.09), inset 0 1px 0 rgba(255,255,255,.7);
+  background:linear-gradient(rgba(255,255,255,.72),rgba(255,255,255,.46));
+  box-shadow:0 2px 5px rgba(50,110,165,.11), inset 0 1px 0 rgba(255,255,255,.85);
   transition:transform .34s var(--spring), box-shadow .3s var(--ease), background .3s var(--ease);
 }
 .cv:hover{
@@ -216,12 +207,21 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 }
 .av{
   width:40px;height:40px;min-width:40px;border-radius:50%;display:grid;place-items:center;
-  font-size:13px;font-weight:680;color:#fff;position:relative;letter-spacing:-.5px;overflow:hidden;
-  box-shadow:inset 0 2px 3px rgba(255,255,255,.75), inset 0 -3px 6px rgba(0,50,100,.26),
-             0 3px 8px rgba(40,100,160,.26), inset 0 0 0 1px rgba(255,255,255,.3);
+  font-size:12.5px;font-weight:700;color:#3a5a76;position:relative;letter-spacing:-.4px;overflow:hidden;
+  text-shadow:0 1px 0 rgba(255,255,255,.85);
+  box-shadow:
+    inset 0 3px 4px rgba(255,255,255,.95),
+    inset 0 -5px 9px rgba(90,140,185,.42),
+    inset 0 0 0 1px rgba(255,255,255,.55),
+    0 4px 10px rgba(60,120,175,.26),
+    0 1px 2px rgba(60,120,175,.18);
 }
-.av::after{content:'';position:absolute;left:17%;top:8%;width:66%;height:34%;border-radius:50%;
-  background:linear-gradient(rgba(255,255,255,.85),rgba(255,255,255,0));pointer-events:none}
+.av::after{content:'';position:absolute;left:20%;top:9%;width:52%;height:30%;border-radius:50%;
+  background:linear-gradient(rgba(255,255,255,.98),rgba(255,255,255,.05));pointer-events:none;
+  filter:blur(.4px)}
+/* a second, tiny catchlight: what makes a sphere look wet rather than matte */
+.av::before{content:'';position:absolute;right:19%;bottom:20%;width:20%;height:15%;border-radius:50%;
+  background:rgba(255,255,255,.55);filter:blur(1.6px);pointer-events:none}
 .av .st{
   position:absolute;right:-1px;bottom:-1px;width:12px;height:12px;border-radius:50%;z-index:2;
   border:2.5px solid #fff;box-shadow:0 1px 3px rgba(20,70,120,.3), inset 0 1px 1px rgba(255,255,255,.6)
@@ -282,7 +282,7 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 #msgs{
   flex:1;overflow-y:auto;overflow-x:hidden;padding:24px 26px 20px;
   display:flex;flex-direction:column;gap:3px;position:relative;z-index:1;
-  background:linear-gradient(rgba(120,185,235,.08), rgba(225,245,255,.14));
+  background:linear-gradient(rgba(190,223,247,.40), rgba(238,249,255,.54));
   border-radius:var(--rL);
   box-shadow:var(--recessDeep);
 }
@@ -323,13 +323,13 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 /* outgoing: pale sky blue, a glass and paper hybrid */
 .b.me{
   align-self:flex-end;color:#123a5e;
-  background:linear-gradient(158deg, rgba(224,242,255,.96) 0%, rgba(196,229,253,.94) 48%, rgba(174,217,250,.95) 100%);
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  background:linear-gradient(158deg, #dcefff 0%, #bfe1fc 46%, #a3d2f8 100%);
   box-shadow:
-    0 8px 22px rgba(40,120,190,.20),
-    0 2px 6px rgba(40,120,190,.14),
-    inset 0 1.5px 0 rgba(255,255,255,.95),
-    inset 0 -1.5px 0 rgba(255,255,255,.5);
+    0 10px 26px rgba(30,100,170,.26),
+    0 3px 8px rgba(30,100,170,.18),
+    inset 0 2px 0 rgba(255,255,255,.95),
+    inset 0 -2px 3px rgba(120,175,220,.45),
+    0 0 0 1px rgba(255,255,255,.55);
   border-bottom-right-radius:9px;
 }
 .b.sys{
@@ -386,19 +386,32 @@ button,input,textarea{font-family:inherit;letter-spacing:inherit}
 /* the envelope holder */
 #cwrap{
   flex:1;position:relative;display:flex;align-items:flex-end;padding:7px;border-radius:var(--rL);
-  background:linear-gradient(rgba(140,195,238,.24), rgba(228,245,255,.34));
+  background:linear-gradient(rgba(196,226,248,.5), rgba(240,250,255,.62));
   box-shadow:
     var(--recess),
     0 8px 22px rgba(45,105,160,.16),
     inset 0 -1px 0 rgba(255,255,255,.9);
   transition:box-shadow .35s var(--ease), transform .4s var(--spring);
 }
-/* the envelope flap, folded down across the bottom */
+/* the two side flaps, folded in, each catching light on its inner face */
+#cwrap::before{
+  content:'';position:absolute;inset:0;border-radius:var(--rL);pointer-events:none;z-index:2;
+  background:
+    linear-gradient(118deg, rgba(255,255,255,.95) 0%, rgba(232,245,255,.5) 13%, rgba(255,255,255,0) 24%),
+    linear-gradient(242deg, rgba(255,255,255,.95) 0%, rgba(232,245,255,.5) 13%, rgba(255,255,255,0) 24%);
+  clip-path:polygon(0 100%, 0 0, 26% 0, 50% 62%, 74% 0, 100% 0, 100% 100%);
+  opacity:.9
+}
+/* the front panel of the envelope, raised, with a soft fold running up to the point */
 #cwrap::after{
-  content:'';position:absolute;left:0;right:0;bottom:0;height:46%;border-radius:0 0 var(--rL) var(--rL);
-  background:linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.5) 55%, rgba(232,246,255,.72));
-  clip-path:polygon(0 100%, 0 34%, 50% 100%, 100% 34%, 100% 100%);
-  pointer-events:none;opacity:.85
+  content:'';position:absolute;left:0;right:0;bottom:0;height:58%;
+  border-radius:0 0 var(--rL) var(--rL);pointer-events:none;z-index:3;
+  background:
+    linear-gradient(rgba(255,255,255,.2) 0%, rgba(246,252,255,.86) 34%, rgba(222,241,254,.98) 100%),
+    radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.85), rgba(255,255,255,0) 58%);
+  clip-path:polygon(0 100%, 0 26%, 50% 100%, 100% 26%, 100% 100%);
+  box-shadow:inset 0 2.5px 0 rgba(255,255,255,.98);
+  filter:drop-shadow(0 -3px 5px rgba(60,115,165,.28))
 }
 #cwrap:focus-within{
   transform:translateY(-2px);
@@ -570,8 +583,11 @@ function avatar(a){
       a.status==='working' ? '#ff9f0a' :
       a.status==='error'   ? '#ff453a' :
       a.enabled===false || a.status==='off' ? '#adbccd' : '#30d158'}"></i>`;
+  // a narrow icy band only: pearl through powder blue to soft cyan. no candy colours.
+  const b = 186 + (h % 34);            // 186..219, sky to periwinkle
+  const s = 34 + (h % 22);             // gently varied saturation
   return `<div class="av" style="background:
-    radial-gradient(130% 130% at 30% 20%, hsl(${h} 78% 66%), hsl(${h} 66% 52%) 55%, hsl(${(h+26)%360} 62% 42%))">${init}${st}</div>`;
+    radial-gradient(125% 125% at 32% 20%, #ffffff 0%, hsl(${b} ${s+16}% 93%) 22%, hsl(${b} ${s}% 80%) 52%, hsl(${b} ${s+6}% 66%) 80%, hsl(${b+8} ${s+10}% 56%) 100%)">${init}${st}</div>`;
 }
 const timeOf = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
 function dayOf(ts){
